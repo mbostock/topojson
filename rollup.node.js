@@ -1,24 +1,34 @@
-var fs = require("fs"),
-    rollup = require("rollup"),
-    dependencies = require("./package.json").dependencies;
+const rollup = require("rollup");
+const dependencies = require("./package.json").dependencies;
 
-rollup.rollup({
+// see below for details on the options
+const inputOptions = {
   input: "index.js",
   external: Object.keys(dependencies)
-}).then(function(bundle) {
-  return bundle.generate({
-    format: "cjs"
-  });
-}).then(function(bundle) {
-  var code = bundle.code;
-  return new Promise(function(resolve, reject) {
-    fs.writeFile("dist/topojson.node.js", code, "utf8", function(error) {
-      if (error) return reject(error);
-      else resolve();
-    });
-  });
-}).catch(abort);
+};
+const outputOptions = {
+  file: "dist/topojson.node.js",
+  format: "cjs"
+};
 
-function abort(error) {
-  console.error(error.stack);
+async function build() {
+  // create a bundle
+  const bundle = await rollup.rollup(inputOptions);
+
+  console.log(bundle.watchFiles); // an array of file names this bundle depends on
+
+  // generate code
+  const { output } = await bundle.generate(outputOptions);
+
+  for (const chunkOrAsset of output) {
+    if (chunkOrAsset.type === "chunk") {
+      console.log(chunkOrAsset.fileName);
+      console.log(chunkOrAsset.exports);
+    }
+  }
+
+  // or write the bundle to disk
+  await bundle.write(outputOptions);
 }
+
+build();

@@ -36,15 +36,15 @@
   },
   "devDependencies": {
     "package-preamble": "0.1",
-    "rollup": "0.49",
+    "rollup": "1.23.0",
     "rollup-plugin-ascii": "0.0",
-    "rollup-plugin-node-resolve": "3",
+    "rollup-plugin-node-resolve": "5.2.0",
     "tape": "4",
     "uglify-js": "3"
   },
   "dependencies": {
-    "topojson-client": "3.0.0",
-    "topojson-server": "3.0.0",
-    "topojson-simplify": "3.0.2"
+    "topojson-client": "3.0.1",
+    "topojson-server": "3.0.1",
+    "topojson-simplify": "3.0.3"
   }
 }
